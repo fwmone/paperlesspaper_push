@@ -1,0 +1,14 @@
+{
+  "domain": "paperlesspaper_push",
+  "name": "paperlesspaper Push",
+  "version": "0.1.0",
+  "documentation": "https://github.com/fwmone/paperlesspaper_push",
+  "issue_tracker": "https://github.com/fwmone/paperlesspaper_push/issues",  
+  "requirements": [],
+  "codeowners": ["@fwmone"],
+  "iot_class": "cloud_push",
+  "config_flow": false,
+  "integration_type": "service",
+  "platforms": ["sensor"],
+  "loggers": ["custom_components.paperlesspaper_push"]
+}

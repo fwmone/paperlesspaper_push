@@ -1,0 +1,26 @@
+upload_random:
+  name: Upload random image
+  description: Selects an image from the input directory (with varied history) and uploads it to Paperlesspaper.
+  fields:
+    dry_run:
+      name: Dry run
+      description: If true, only selects/publishes the image but does not upload it.
+      required: false
+      selector:
+        boolean: {}
+    publish:
+      name: Publish copy
+      description: If true, copies the selected image to the publish_dir for debugging/preview.
+      required: false
+      selector:
+        boolean: {}
+    force_file:
+      name: Force file
+      description: Use a specific filename from the input directory instead of choosing randomly.
+      required: false
+      selector:
+        text: {}
+
+reset_recent:
+  name: Reset recent history
+  description: Clears the internal recent-history list used for varied random selection.

@@ -1,0 +1,8 @@
+{
+  "name": "paperlesspaper Push",
+  "category": "Integration",
+  "description": "Custom component to provide the paperlesspaper cloud with new pictures.",
+  "homeassistant": "2026.1.0",
+  "author": "F. Müller",
+  "render_readme": true
+}
