@@ -13,8 +13,12 @@
   - [Sensor](#sensor)
     - [State:](#state)
     - [Attributes:](#attributes)
-  - [Services](#services)
-  - [Automation Examples](#automation-examples)
+- [Services](#services)
+- [Automation Examples](#automation-examples)
+- [Device Telemetry](#device-telemetry)
+  - [Telemetry sensors](#telemetry-sensors)
+  - [Manual refresh (optional)](#manual-refresh-optional)
+  - [Battery percentage calculation](#battery-percentage-calculation)
 - [API / Upload Method](#api--upload-method)
 - [Troubleshooting](#troubleshooting)
   - [Upload succeeds but frame shows old image](#upload-succeeds-but-frame-shows-old-image)
@@ -26,9 +30,9 @@
 
 # Features
 
-A small Home Assistant custom integration to **upload images from the Home Assistant server to a Paperlesspaper e-paper frame** using the WireWire API. The integration is designed to work well with Home Assistant automations (e.g. upload a new image twice a day), and provides a *“varied random”* image selection that avoids repeating the same images too often.
+A small Home Assistant custom integration to **upload images from the Home Assistant server to a paperlesspaper e-paper frame** using the WireWire API. The integration is designed to work well with Home Assistant automations (e.g. upload a new image twice a day), and provides a *“varied random”* image selection that avoids repeating the same images too often.
 
-- Upload a random image from an input folder to a Paperlesspaper frame via API
+- Upload a random image from an input folder to a paperlesspaper frame via API
 - "Varied random" selection:
   - remembers recently used images
   - recent-window size = **50% of available images** (min 5, max 50)
@@ -36,11 +40,14 @@ A small Home Assistant custom integration to **upload images from the Home Assis
 - Optional publish/copy of the selected image into `/config/www/...` for preview/debugging
 - Optional cleanup of the publish directory before publishing
 - Robust upload retries with exponential backoff
-- Home Assistant sensor showing:
+- Gets device information like battery level and last update
+- Home Assistant sensors showing:
   - last upload timestamp
   - current file name
   - last result (success/failed/dry_run)
   - last HTTP status / error
+  - battery level / percentage
+  - last update
 
 # 📦 Installation
 
@@ -60,6 +67,8 @@ A small Home Assistant custom integration to **upload images from the Home Assis
 
 # Configuration
 
+Please follow the steps for [generating an API key](https://paperlesspaper.de/posts/api). 
+
 This integration currently uses YAML configuration.
 
 Add this to your `configuration.yaml`:
@@ -67,7 +76,8 @@ Add this to your `configuration.yaml`:
 ```yaml
 paperlesspaper_push:
   api_key: !secret paperlesspaper_api_key
-  paper_id: !secret paperlesspaper_paper_id
+  paper_id: "YOUR_PAPER_ID"
+  device_id: "YOUR_DEVICE_ID"
 
   # optional:
   base_url: https://api.memo.wirewire.de/v1
@@ -82,7 +92,6 @@ Add the secrets to secrets.yaml:
 
 ```yaml
 paperlesspaper_api_key: "YOUR_API_KEY"
-paperlesspaper_paper_id: "YOUR_PAPER_ID"
 ```
 
 Restart Home Assistant after changing YAML.
@@ -119,7 +128,7 @@ This is useful for debugging or previewing the selected image from Home Assistan
 - last_error
 - published_name
 
-## Services
+# Services
 ```paperlesspaper_push.upload_random```
 
 Uploads a (varied) random image.
@@ -148,7 +157,7 @@ Example:
 service: paperlesspaper_push.reset_recent
 ```
 
-## Automation Examples
+# Automation Examples
 
 Upload twice per day:
 
@@ -169,6 +178,44 @@ trigger:
 action:
   - service: paperlesspaper_push.upload_random
 ```
+
+# Device Telemetry
+
+In addition to upload/push functionality, the integration can poll the paperlesspaper API for **device telemetry** (battery, timestamps, sync state).
+
+The integration will periodically call ```GET /v1/devices/<device_id>``` and update the related sensors.
+
+## Telemetry sensors
+
+When device_id is configured, the following sensors are created:
+
+- Battery
+  - sensor.paperlesspaper_push_battery_voltage (V)
+  - sensor.paperlesspaper_push_battery (%)
+
+- Timestamps
+  - sensor.paperlesspaper_push_last_reachable
+  - sensor.paperlesspaper_push_next_device_sync
+  - sensor.paperlesspaper_push_updated_at
+  - sensor.paperlesspaper_push_loaded_at
+
+Note: The API exposes batLevel as a raw value (typically millivolts for 4×AAA in series).
+The integration converts it to a percentage using a pragmatic min/max voltage model.
+
+## Manual refresh (optional)
+
+You can trigger an immediate telemetry refresh via the service:
+```paperlesspaper_push.refresh_device```
+
+## Battery percentage calculation
+
+Battery percentage is derived from the reported raw battery voltage (`batLevel`).
+
+Default mapping (4×AAA in series):
+- 6.4 V → 100%
+- 4.8 V → 0%
+
+Values are clamped to the range and mapped linearly in between.
 
 # API / Upload Method
 

@@ -24,3 +24,7 @@ upload_random:
 reset_recent:
   name: Reset recent history
   description: Clears the internal recent-history list used for varied random selection.
+
+refresh_device:
+  name: Refresh device telemetry
+  description: Forces an immediate refresh of the Paperlesspaper device telemetry (GET /devices/<device_id>) so sensors update instantly.

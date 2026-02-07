@@ -8,6 +8,8 @@ CONF_PUBLISH_DIR = "publish_dir"
 CONF_TIMEOUT = "timeout"
 CONF_MAX_ATTEMPTS = "max_attempts"
 CONF_PUBLISH = "publish"
+CONF_DEVICE_ID = "device_id"         
+CONF_SCAN_INTERVAL = "scan_interval"
 
 DEFAULT_BASE_URL = "https://api.memo.wirewire.de/v1"
 DEFAULT_INPUT_DIR = "/media/picture-frames/paperlesspaper"
@@ -15,6 +17,7 @@ DEFAULT_PUBLISH_DIR = "/config/www/picture-frames/paperlesspaper"
 DEFAULT_TIMEOUT = 30
 DEFAULT_MAX_ATTEMPTS = 4
 DEFAULT_PUBLISH = True
+DEFAULT_SCAN_INTERVAL = 900  # 15 min
 
 STORE_VERSION = 1
 STORE_KEY_STATE = f"{DOMAIN}_state"
@@ -33,3 +36,4 @@ SERVICE_RESET_RECENT = "reset_recent"
 SERVICE_FIELD_FORCE_FILE = "force_file"
 SERVICE_FIELD_DRY_RUN = "dry_run"
 SERVICE_FIELD_PUBLISH = "publish"
+SERVICE_REFRESH_DEVICE = "refresh_device"

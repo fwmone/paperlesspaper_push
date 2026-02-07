@@ -5,6 +5,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.storage import Store
 from homeassistant.helpers.typing import ConfigType
 
+from .coordinator import PaperlesspaperDeviceCoordinator
+
 from .const import (
     DOMAIN,
     CONF_API_KEY,
@@ -15,6 +17,9 @@ from .const import (
     CONF_TIMEOUT,
     CONF_MAX_ATTEMPTS,
     CONF_PUBLISH,
+    CONF_DEVICE_ID, 
+    CONF_SCAN_INTERVAL, 
+    DEFAULT_SCAN_INTERVAL,
     DEFAULT_BASE_URL,
     DEFAULT_INPUT_DIR,
     DEFAULT_PUBLISH_DIR,
@@ -29,6 +34,7 @@ from .const import (
     SERVICE_FIELD_FORCE_FILE,
     SERVICE_FIELD_DRY_RUN,
     SERVICE_FIELD_PUBLISH,
+    SERVICE_REFRESH_DEVICE,
     ATTR_CURRENT_FILENAME,
     ATTR_LAST_RESULT,
     ATTR_LAST_HTTP_STATUS,
@@ -78,6 +84,23 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         CONF_MAX_ATTEMPTS: int(cfg.get(CONF_MAX_ATTEMPTS, DEFAULT_MAX_ATTEMPTS)),
         CONF_PUBLISH: bool(cfg.get(CONF_PUBLISH, DEFAULT_PUBLISH)),
     }
+
+    device_id = cfg.get(CONF_DEVICE_ID)
+    scan_interval = int(cfg.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL))
+
+    if device_id:
+        coordinator = PaperlesspaperDeviceCoordinator(
+            hass=hass,
+            api_key=api_key,
+            base_url=hass.data[DOMAIN]["config"][CONF_BASE_URL],
+            device_id=device_id,
+            scan_interval_s=scan_interval,
+        )
+        hass.data[DOMAIN]["device_coordinator"] = coordinator
+        hass.data[DOMAIN]["device_unique_prefix"] = f"{DOMAIN}_{device_id}"
+
+    # Initial fetch so sensors have values right away (YAML setup, no config entry)
+    await coordinator.async_refresh()
 
     # Stores
     hass.data[DOMAIN]["store_state"] = Store(hass, STORE_VERSION, STORE_KEY_STATE)
@@ -203,7 +226,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         if dispatcher:
             dispatcher()
 
+    async def handle_refresh_device(call):
+        coordinator = hass.data.get(DOMAIN, {}).get("device_coordinator")
+        if coordinator:
+            await coordinator.async_request_refresh()
+
     hass.services.async_register(DOMAIN, SERVICE_UPLOAD_RANDOM, handle_upload_random)
     hass.services.async_register(DOMAIN, SERVICE_RESET_RECENT, handle_reset_recent)
+    hass.services.async_register(DOMAIN, SERVICE_REFRESH_DEVICE, handle_refresh_device)
 
     return True
+

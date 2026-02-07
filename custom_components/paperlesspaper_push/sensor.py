@@ -23,8 +23,16 @@ async def async_setup_sensors(hass: HomeAssistant) -> None:
     await async_load_platform(hass, "sensor", DOMAIN, {}, hass.config)
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    entity = PaperlesspaperPushStatusSensor(hass)
-    async_add_entities([entity], update_before_add=True)
+    entities = [PaperlesspaperPushStatusSensor(hass)]
+
+    coordinator = hass.data.get(DOMAIN, {}).get("device_coordinator")
+    unique_prefix = hass.data.get(DOMAIN, {}).get("device_unique_prefix")
+
+    if coordinator and unique_prefix:
+        from .device_sensors import PaperlesspaperDeviceSensor, SENSORS
+        entities.extend(PaperlesspaperDeviceSensor(coordinator, sdef, unique_prefix) for sdef in SENSORS)
+
+    async_add_entities(entities, update_before_add=True)
 
 
 class PaperlesspaperPushStatusSensor(Entity):
