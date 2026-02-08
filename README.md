@@ -2,6 +2,7 @@
 
 - [📖 Table of content](#-table-of-content)
 - [Features](#features)
+- [🧩 Requirements](#-requirements)
 - [📦 Installation](#-installation)
   - [Option A: Installation via HACS (recommended)](#option-a-installation-via-hacs-recommended)
   - [Option B: Manual installation](#option-b-manual-installation)
@@ -48,6 +49,13 @@ A small Home Assistant custom integration to **upload images from the Home Assis
   - last HTTP status / error
   - battery level / percentage
   - last update
+
+# 🧩 Requirements
+
+- Home Assistant **2024.12** or newer. I personally always work on the current version of Home Assistant, so I cannot guarantee compatibility with older versions.
+- Your Home Assistant server needs internet access to connect to the paperlesspaper cloud service. paperlesspaper does not provide an offline service (yet).
+- The images to be retrieved must be available on the Home Assistant server, optimized for the frame, which means: in the correct resolution (800x480px for the 7" frame), in PNG format, and already adjusted for the Spectra 6 display. In my setup, I synchronize the images from a local [Immich](https://immich.app/) server and then optimize them automatically. I wrote separate scripts for this, which I will post on GitHub when I get a chance. I published my optimizer using paperlesspaper's EPD Optimizer [here](https://github.com/fwmone/eink-optimize).
+- The images must be in <input_dir> (see configuration below). Use PNGs for best results, but JPEGs are also possible.
 
 # 📦 Installation
 
@@ -102,7 +110,7 @@ Restart Home Assistant after changing YAML.
 Place images in ```/media/picture-frames/paperlesspaper```. 
 
 Supported formats:
-- .png
+- .png (use that for best results)
 - .jpg / .jpeg
 
 ### Publish directory (optional)
@@ -215,7 +223,7 @@ Default mapping (4×AAA in series):
 - 6.4 V → 100%
 - 4.8 V → 0%
 
-Values are clamped to the range and mapped linearly in between.
+Values are clamped to the range and mapped linearly in between. So, yes, when using rechargeable NiMH batteries, the mapping is likely to show never 100%. Haven't tested it yet.
 
 # API / Upload Method
 
