@@ -7,6 +7,9 @@
   - [Option A: Installation via HACS (recommended)](#option-a-installation-via-hacs-recommended)
   - [Option B: Manual installation](#option-b-manual-installation)
 - [Configuration](#configuration)
+  - [How to get your PAPER\_ID and DEVICE\_ID (using the web application)](#how-to-get-your-paper_id-and-device_id-using-the-web-application)
+  - [How to get your PAPER\_ID and DEVICE\_ID (using cURL)](#how-to-get-your-paper_id-and-device_id-using-curl)
+  - [configuration.yaml](#configurationyaml)
   - [Folder Setup](#folder-setup)
     - [Input directory](#input-directory)
     - [Publish directory (optional)](#publish-directory-optional)
@@ -76,6 +79,18 @@ A small Home Assistant custom integration to **upload images from the Home Assis
 # Configuration
 
 Please follow the steps for [generating an API key](https://paperlesspaper.de/posts/api). 
+
+## How to get your PAPER_ID and DEVICE_ID (using the web application)
+After creating the API key, stay logged in the [web application](https://web.wirewire.de). In the lefthand menu, click "Devices" (Geräte) and then your frame. Your browser should now show a URL like this: ```https://web.wirewire.de/6963a0955ded783d12f68bd0/devices/692305173fd4bbc4a8741b43/```. The string ```692305173fd4bbc4a8741b43``` (after /devices/) is YOUR_DEVICE_ID. If you have not already done so, click "Current" (Aktuell) in the lefthand menu and upload a new picture. This automatically creates a paper. After doing so, choose "Library" (Bibliothek) and click the first picture. An editor should open and your browser's URL should show a URL like this ```https://web.wirewire.de/6963a0955ded783d12f68bd0/library/device/692305173fd4bbc4a8741b43/6987a14a51fd56e10cf43d14```. The string ```6987a14a51fd56e10cf43d14``` is YOUR_PAPER_ID.
+
+## How to get your PAPER_ID and DEVICE_ID (using cURL)
+
+If you're familiar with cURL and JSON, do this:
+
+1. Retrieve your organization id: ```curl https://api.memo.wirewire.de/v1/organizations/ -H "x-api-key: YOUR_API_KEY"```. 
+2. Retrieve your device id and paper id: ```curl https://api.memo.wirewire.de/v1/devices?organization=YOUR_ORGANIZATION_ID -H "x-api-key: YOUR_API_KEY"```. The result contains the keys "id" which is YOUR_DEVICE_ID (do *not* use "deviceId") and "paper" which is YOUR_PAPER_ID.
+
+## configuration.yaml
 
 This integration currently uses YAML configuration.
 
