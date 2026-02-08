@@ -57,10 +57,6 @@ from .sensor import async_setup_sensors
 _LOGGER = logging.getLogger(__name__)
 
 
-def _utc_now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
-
-
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     cfg = config.get(DOMAIN)
     if not cfg:
@@ -200,7 +196,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         if result.get("ok"):
             _LOGGER.info("Upload succeeded: %s (%s)", chosen, result.get("status"))
             await _save_state_and_update_sensor({
-                "last_upload": _utc_now_iso(),
+                "last_upload": datetime.now(timezone.utc),
                 ATTR_CURRENT_FILENAME: chosen,
                 ATTR_LAST_RESULT: STATE_SUCCESS,
                 ATTR_LAST_HTTP_STATUS: result.get("status"),

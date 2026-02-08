@@ -3,6 +3,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.discovery import async_load_platform
+from homeassistant.components.sensor import SensorDeviceClass
 
 from .const import (
     DOMAIN,
@@ -39,6 +40,7 @@ class PaperlesspaperPushStatusSensor(Entity):
     _attr_has_entity_name = True
     _attr_name = "Paperlesspaper Push Status"
     _attr_unique_id = f"{DOMAIN}_status"
+    _attr_device_class = SensorDeviceClass.TIMESTAMP    
 
     def __init__(self, hass: HomeAssistant):
         self.hass = hass
@@ -66,7 +68,7 @@ class PaperlesspaperPushStatusSensor(Entity):
 
     async def _handle_update(self):
         data = self.hass.data.get(DOMAIN, {}).get("state", {}) or {}
-        self._state = data.get("last_upload") or "never"
+        self._state = data.get("last_upload")
 
         self._attrs = {
             ATTR_CURRENT_FILENAME: data.get(ATTR_CURRENT_FILENAME),
