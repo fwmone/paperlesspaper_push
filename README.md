@@ -57,7 +57,7 @@ A small Home Assistant custom integration to **upload images from the Home Assis
 
 - Home Assistant **2024.12** or newer. I personally always work on the current version of Home Assistant, so I cannot guarantee compatibility with older versions.
 - Your Home Assistant server needs internet access to connect to the paperlesspaper cloud service. paperlesspaper does not provide an offline service (yet).
-- The images to be retrieved must be available on the Home Assistant server, optimized for the frame, which means: in the correct resolution (800x480px for the 7" frame), in PNG format, and already adjusted for the Spectra 6 display. In my setup, I synchronize the images from a local [Immich](https://immich.app/) server and then optimize them automatically. I wrote separate scripts for this, which I will post on GitHub when I get a chance. I published my optimizer using paperlesspaper's EPD Optimizer [here](https://github.com/fwmone/eink-optimize).
+- The images to be retrieved have to be available on the Home Assistant server, optimized for the frame, which means: in the correct resolution (800x480px for the 7" frame), in PNG format, and already adjusted for the Spectra 6 display. In my setup, I synchronize the images from a local [Immich](https://immich.app/) server and then optimize them automatically. I wrote separate scripts for this, which I will post on GitHub when I get a chance. I already published my optimizer using paperlesspaper's EPD Optimizer [here](https://github.com/fwmone/eink-optimize), which works quite well.
 - The images must be in <input_dir> (see configuration below). Use PNGs for best results, but JPEGs are also possible.
 
 # 📦 Installation
@@ -122,7 +122,7 @@ Restart Home Assistant after changing YAML.
 ## Folder Setup
 ### Input directory
 
-Place images in ```/media/picture-frames/paperlesspaper```. 
+Place frame-optimized (800x480px for 7", optimized colors - get optimization script [here](https://github.com/fwmone/eink-optimize)) images in ```/media/picture-frames/paperlesspaper``` (or whatever folder you have configured). 
 
 Supported formats:
 - .png (use that for best results)
