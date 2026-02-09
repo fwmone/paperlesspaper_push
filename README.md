@@ -19,6 +19,8 @@
     - [Attributes:](#attributes)
 - [Services](#services)
 - [Automation Examples](#automation-examples)
+  - [Upload twice per day:](#upload-twice-per-day)
+  - [Run dynamically shortly before next frame sync](#run-dynamically-shortly-before-next-frame-sync)
 - [Device Telemetry](#device-telemetry)
   - [Telemetry sensors](#telemetry-sensors)
   - [Manual refresh (optional)](#manual-refresh-optional)
@@ -182,7 +184,7 @@ service: paperlesspaper_push.reset_recent
 
 # Automation Examples
 
-Upload twice per day:
+## Upload twice per day:
 
 ```yaml
 alias: Paperlesspaper Upload Morning
@@ -191,15 +193,55 @@ trigger:
     at: "05:45:00"
 action:
   - service: paperlesspaper_push.upload_random
+    data:
+      publish: true
+      dry_run: false
+```
 
 ---
 
+```yaml
 alias: Paperlesspaper Upload Afternoon
 trigger:
   - platform: time
     at: "16:45:00"
 action:
   - service: paperlesspaper_push.upload_random
+    data:
+      publish: true
+      dry_run: false
+```
+
+## Run dynamically shortly before next frame sync
+
+For whatever reason, wake up time periods are not precise. So are 12h in reality about 11:50h. Because of that, I created a dynamic upload using the ```paperlesspaper_push_next_device_sync``` sensor:
+
+```yaml
+alias: "paperlesspaper: Upload"
+description: ""
+triggers:
+  - value_template: >
+      {% set next = states('sensor.paperlesspaper_push_next_device_sync') %} {%
+      if next not in ['unknown','unavailable','none',''] %}
+        {{ as_timestamp(next) - 30*60 <= now().timestamp() }}
+      {% else %}
+        false
+      {% endif %}
+    trigger: template
+conditions:
+  - condition: template
+    value_template: >
+      {% set last = states('sensor.paperlesspaper_push_status') %} {% if last
+      not in ['unknown','unavailable','none',''] %}
+        {{ now().timestamp() - as_timestamp(last) > 3600 }}
+      {% else %}
+        true
+      {% endif %}
+actions:
+  - action: paperlesspaper_push.upload_random
+    data:
+      publish: true
+      dry_run: false
 ```
 
 # Device Telemetry
