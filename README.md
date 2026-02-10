@@ -25,7 +25,7 @@
   - [Telemetry sensors](#telemetry-sensors)
   - [Manual refresh (optional)](#manual-refresh-optional)
   - [Battery percentage calculation](#battery-percentage-calculation)
-- [API / Upload Method](#api--upload-method)
+  - [Example for a Home Assistant dashboard integration](#example-for-a-home-assistant-dashboard-integration)
 - [Troubleshooting](#troubleshooting)
   - [Upload succeeds but frame shows old image](#upload-succeeds-but-frame-shows-old-image)
   - [Blocking calls in logs](#blocking-calls-in-logs)
@@ -281,6 +281,94 @@ Default mapping (4×AAA in series):
 - 4.8 V → 0%
 
 Values are clamped to the range and mapped linearly in between. So, yes, when using rechargeable NiMH batteries, the mapping is likely to show never 100%. Haven't tested it yet.
+
+## Example for a Home Assistant dashboard integration
+
+![image](./README/homeassistant-dashboard-example.jpg)
+
+Shows last pulled image, battery value and last pull time. I use the super handy [button cards](https://github.com/custom-cards/button-card), that need to be installed beforehand.
+
+```yaml
+type: grid
+cards:
+  - type: heading
+    icon: mdi:coat-rack
+    heading: Diele
+    heading_style: title
+  - type: markdown
+    content: |-
+      <img src="{{
+          state_attr('binary_sensor.bloomin8_last_pull_success','last_image_url')
+          }}"
+      height="400">
+    card_mod:
+      style: |
+        ha-card { 
+          text-align: center; 
+        }
+  - type: custom:layout-card
+    layout_type: grid
+    layout:
+      grid-template-columns: 1fr 1fr
+      grid-gap: 6px
+      margin: "-8px 0 0 0;"
+      card_margin: 0 0 0 0;
+    cards:
+      - type: custom:button-card
+        entity: sensor.bloomin8_battery
+        name: Batterie
+        show_state: true
+        show_label: true
+        layout: icon_name_state2nd
+        styles:
+          icon:
+            - height: 32px
+          card:
+            - border-radius: 28px
+            - padding: 10px
+            - height: 110px
+          grid:
+            - grid-template-areas: "\"i\" \"n\" \"s\""
+            - grid-template-columns: 1fr
+            - grid-template-rows: 1fr min-content min-content
+          name:
+            - justify-self: center
+            - font-weight: bold
+            - font-size: 0.9em
+          state:
+            - justify-self: center
+            - font-size: 12px
+            - padding-top: 1px
+        tap_action:
+          action: more-info
+      - type: custom:button-card
+        entity: sensor.bloomin8_letzter_pull
+        name: Letzter Pull
+        show_state: true
+        show_label: true
+        layout: icon_name_state2nd
+        styles:
+          icon:
+            - height: 32px
+          card:
+            - border-radius: 28px
+            - padding: 10px
+            - height: 110px
+          grid:
+            - grid-template-areas: "\"i\" \"n\" \"s\""
+            - grid-template-columns: 1fr
+            - grid-template-rows: 1fr min-content min-content
+          name:
+            - justify-self: center
+            - font-weight: bold
+            - font-size: 0.9em
+          state:
+            - justify-self: center
+            - font-size: 12px
+            - padding-top: 1px
+        tap_action:
+          action: more-info
+column_span: 2
 
 # API / Upload Method
 
