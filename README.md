@@ -277,8 +277,8 @@ You can trigger an immediate telemetry refresh via the service:
 Battery percentage is derived from the reported raw battery voltage (`batLevel`).
 
 Default mapping (4×AAA in series):
-- 6.4 V → 100%
-- 4.8 V → 0%
+- 6.2 V → 100%
+- 4.0 V → 0%
 
 Values are clamped to the range and mapped linearly in between. So, yes, when using rechargeable NiMH batteries, the mapping is likely to show never 100%. Haven't tested it yet.
 

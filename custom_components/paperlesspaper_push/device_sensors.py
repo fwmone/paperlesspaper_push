@@ -31,8 +31,8 @@ def _battery_percent_from_mv(mv: int | None) -> Optional[int]:
 
     v = mv / 1000.0
     # 4xAAA batteries
-    V_MIN = 4.8
-    V_MAX = 6.4
+    V_MIN = 4.0
+    V_MAX = 6.2
 
     if v <= V_MIN:
         return 0
