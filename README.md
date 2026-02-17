@@ -257,6 +257,7 @@ When device_id is configured, the following sensors are created:
 - Battery
   - sensor.paperlesspaper_push_battery_voltage (V)
   - sensor.paperlesspaper_push_battery (%)
+  - sensor.paperlesspaper_push_battery_rechargeable (%)
 
 - Timestamps
   - sensor.paperlesspaper_push_last_reachable
@@ -276,11 +277,15 @@ You can trigger an immediate telemetry refresh via the service:
 
 Battery percentage is derived from the reported raw battery voltage (`batLevel`).
 
-Default mapping (4×AAA in series):
+Default mapping (4×AAA in series) for sensor.paperlesspaper_push_battery:
 - 6.2 V → 100%
 - 4.0 V → 0%
 
-Values are clamped to the range and mapped linearly in between. So, yes, when using rechargeable NiMH batteries, the mapping is likely to show never 100%. Haven't tested it yet.
+Default mapping (4×AAA NiMH in series) for sensor.paperlesspaper_push_battery_rechargeable:
+- 5.3 V → 100%
+- 4.0 V → 0%
+
+Values are clamped to the range and mapped linearly in between. 
 
 ## Example for a Home Assistant dashboard integration
 

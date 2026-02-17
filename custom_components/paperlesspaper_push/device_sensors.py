@@ -41,6 +41,22 @@ def _battery_percent_from_mv(mv: int | None) -> Optional[int]:
 
     return round((v - V_MIN) / (V_MAX - V_MIN) * 100)
 
+def _battery_percent_nimh(mv: int | None) -> Optional[int]:
+    if mv is None:
+        return None
+
+    v = mv / 1000.0
+
+    # NiMH 4xAAA
+    V_MIN = 4.0
+    V_MAX = 5.3
+
+    if v >= V_MAX:
+        return 100
+    if v <= V_MIN:
+        return 0
+
+    return round((v - V_MIN) / (V_MAX - V_MIN) * 100)
 
 def _battery_voltage_v(mv: int | None) -> Optional[float]:
     if mv is None:
@@ -86,6 +102,13 @@ SENSORS: tuple[_SensorDef, ...] = (
         device_class=SensorDeviceClass.BATTERY,
         unit=PERCENTAGE,
         value_fn=lambda d: _battery_percent_from_mv(_get_bat_mv(d)),
+    ),
+    _SensorDef(
+        key="battery_percent_rechargeable",
+        name="Battery (Rechargeable)",
+        device_class=SensorDeviceClass.BATTERY,
+        unit=PERCENTAGE,
+        value_fn=lambda d: _battery_percent_nimh(_get_bat_mv(d)),
     ),
     _SensorDef(
         key="last_reachable",

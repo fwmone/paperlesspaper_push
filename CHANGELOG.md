@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.4] - 2026-02-17
+
+### Added
+- Added `battery_percent_rechargeable` sensor to provide a more realistic
+  battery level estimation for rechargeable batteries (e.g. NiMH).
+- The new sensor derives remaining charge from pack voltage and is intended
+  for monitoring and automations when using rechargeable cells.
+- Existing `battery_percent` sensor continues to reflect the vendor/device
+  battery percentage logic.
+
+### Changed
+- Clarified separation between vendor-reported battery percentage and
+  voltage-based rechargeable battery estimation.
+
 ## [0.1.3] - 2026-02-15
 
 ### Changed
