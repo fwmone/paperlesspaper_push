@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Callable, Optional
 
-from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
+from homeassistant.components.sensor import SensorEntity, SensorDeviceClass, SensorStateClass
 from homeassistant.const import PERCENTAGE, UnitOfElectricPotential
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.helpers.entity import Entity
@@ -85,6 +85,8 @@ class _SensorDef:
     name: str
     device_class: SensorDeviceClass | None = None
     unit: str | None = None
+    state_class: SensorStateClass | None = None
+    suggested_display_precision: int | None = None
     value_fn: Callable[[dict], Any] = lambda d: None
 
 
@@ -94,6 +96,8 @@ SENSORS: tuple[_SensorDef, ...] = (
         name="Battery Voltage",
         device_class=SensorDeviceClass.VOLTAGE,
         unit=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=2,
         value_fn=lambda d: _battery_voltage_v(_get_bat_mv(d)),
     ),
     _SensorDef(
@@ -101,6 +105,8 @@ SENSORS: tuple[_SensorDef, ...] = (
         name="Battery",
         device_class=SensorDeviceClass.BATTERY,
         unit=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
         value_fn=lambda d: _battery_percent_from_mv(_get_bat_mv(d)),
     ),
     _SensorDef(
@@ -108,6 +114,8 @@ SENSORS: tuple[_SensorDef, ...] = (
         name="Battery (Rechargeable)",
         device_class=SensorDeviceClass.BATTERY,
         unit=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
         value_fn=lambda d: _battery_percent_nimh(_get_bat_mv(d)),
     ),
     _SensorDef(
@@ -147,6 +155,13 @@ class PaperlesspaperDeviceSensor(CoordinatorEntity, SensorEntity):
         self._attr_name = sensor_def.name
         self._attr_device_class = sensor_def.device_class
         self._attr_native_unit_of_measurement = sensor_def.unit
+
+        if sensor_def.state_class:
+            self._attr_state_class = sensor_def.state_class
+
+        if sensor_def.suggested_display_precision is not None:
+            self._attr_suggested_display_precision = sensor_def.suggested_display_precision
+
         self._attr_suggested_object_id = f"{DOMAIN}_{sensor_def.key}"
 
     @property

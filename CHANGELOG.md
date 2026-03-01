@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.5] - 2026-03-01
+
+### Added
+- Added long-term statistics support for battery-related sensors.
+- Battery voltage and battery percentage sensors are now marked as measurement
+  sensors, enabling Home Assistant long-term statistics and historical trends.
+- Added `battery_percent_rechargeable` sensor to provide a more realistic battery
+  level estimation when using rechargeable batteries (e.g. NiMH).
+
+### Changed
+- Improved battery sensor metadata to align with Home Assistant best practices
+  for long-term statistics (state class and measurement semantics).
+- Clarified separation between vendor-style battery percentage and
+  rechargeable battery estimation.
+
 ## [0.1.4] - 2026-02-17
 
 ### Added
