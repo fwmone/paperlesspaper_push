@@ -11,7 +11,7 @@ CONF_PUBLISH = "publish"
 CONF_DEVICE_ID = "device_id"         
 CONF_SCAN_INTERVAL = "scan_interval"
 
-DEFAULT_BASE_URL = "https://api.memo.wirewire.de/v1"
+DEFAULT_BASE_URL = "https://api.paperlesspaper.de/v1"
 DEFAULT_INPUT_DIR = "/media/picture-frames/paperlesspaper"
 DEFAULT_PUBLISH_DIR = "/config/www/picture-frames/paperlesspaper"
 DEFAULT_TIMEOUT = 30

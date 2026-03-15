@@ -89,8 +89,8 @@ After creating the API key, stay logged in the [web application](https://web.wir
 
 If you're familiar with cURL and JSON, do this:
 
-1. Retrieve your organization id: ```curl https://api.memo.wirewire.de/v1/organizations/ -H "x-api-key: YOUR_API_KEY"```. 
-2. Retrieve your device id and paper id: ```curl https://api.memo.wirewire.de/v1/devices?organization=YOUR_ORGANIZATION_ID -H "x-api-key: YOUR_API_KEY"```. The result contains the keys "id" which is YOUR_DEVICE_ID (do *not* use "deviceId") and "paper" which is YOUR_PAPER_ID.
+1. Retrieve your organization id: ```curl https://api.paperlesspaper.de/v1/organizations/ -H "x-api-key: YOUR_API_KEY"```. 
+2. Retrieve your device id and paper id: ```curl https://api.paperlesspaper.de/v1/devices?organization=YOUR_ORGANIZATION_ID -H "x-api-key: YOUR_API_KEY"```. The result contains the keys "id" which is YOUR_DEVICE_ID (do *not* use "deviceId") and "paper" which is YOUR_PAPER_ID.
 
 ## configuration.yaml
 
@@ -105,7 +105,7 @@ paperlesspaper_push:
   device_id: "YOUR_DEVICE_ID"
 
   # optional:
-  base_url: https://api.memo.wirewire.de/v1
+  base_url: https://api.paperlesspaper.de/v1
   input_dir: /media/picture-frames/paperlesspaper
   publish_dir: /config/www/picture-frames/paperlesspaper
   timeout: 30
@@ -380,7 +380,7 @@ column_span: 2
 The upload is performed using a multipart form-data request similar to:
 
 ```bash
-curl -X POST "https://api.memo.wirewire.de/v1/papers/uploadSingleImage/<PAPER_ID>" \
+curl -X POST "https://api.paperlesspaper.de/v1/papers/uploadSingleImage/<PAPER_ID>" \
   -H "x-api-key: <API_KEY>" \
   -F "picture=@/path/to/image.png;type=image/png"
 ```
