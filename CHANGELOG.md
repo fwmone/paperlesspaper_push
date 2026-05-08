@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.8] - 2026-05-08
+
+### Changed
+- No integration update, but updating README file to reflect update of paperlesspaper API service. As of ~20. April 2026, paperlesspaper changed their uploadSingleImage API call so that it includes their new, optimized version of EPDOptimize. Therefore, you do **not need** to pre-dither the images anymore, only resize them and save as PNG. Pre-dithering / pre-optimizing using EPDOptimize leads to wrong colors. In case you use the optimization script (https://github.com/fwmone/eink-optimize) to pre-dither images, please disable EPDOptimize and re-render all your images. I provide further explanation in the optimization script's README.
+
 ## [0.1.7] - 2026-04-25
 
 ### Changed

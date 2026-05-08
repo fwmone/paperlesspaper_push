@@ -41,7 +41,7 @@ A small Home Assistant custom integration to **upload images from the Home Assis
 - Upload a random image from an input folder to a paperlesspaper frame via API
 - "Varied random" selection:
   - remembers recently used images
-  - recent-window size = **50% of available images** (min 5, max 50)
+  - recent-window size = **50% of available images** (min 5, max 250)
   - avoids repetition until the pool is exhausted
 - Optional publish/copy of the selected image into `/config/www/...` for preview/debugging
 - Optional cleanup of the publish directory before publishing
@@ -124,7 +124,7 @@ Restart Home Assistant after changing YAML.
 ## Folder Setup
 ### Input directory
 
-Place frame-optimized (800x480px for 7", optimized colors - get optimization script [here](https://github.com/fwmone/eink-optimize)) images in ```/media/picture-frames/paperlesspaper``` (or whatever folder you have configured). 
+Place frame-optimized (800x480px for 7" as PNG, no pre-dithering or color optimization required - get optimization script [here](https://github.com/fwmone/eink-optimize)) images in ```/media/picture-frames/paperlesspaper``` (or whatever folder you have configured). **Update** As of ~20. April 2026, paperlesspaper changed their uploadSingleImage API call so that it includes their new, optimized version of EPDOptimize. Therefore, you do not need to pre-dither the images anymore, only resize it and save as PNG. Pre-dithering / pre-optimizing using EPDOptimize leads to wrong colors.
 
 Supported formats:
 - .png (use that for best results)
