@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.9] - 2026-07-19
+
+## Deprecated
+
+`paperlesspaper_push` is now deprecated.
+
+The manufacturer of the paperlesspaper frame has chosen to support the more comprehensive [`paperlesspaper-ha`](https://github.com/djiwondee/paperlesspaper-ha) integration, which provides UI-based configuration, automatic device discovery, multi-frame support, Media Browser integration, and additional device entities and events.
+
+To avoid maintaining two largely overlapping integrations and to make the choice easier for users, no further feature development is planned for `paperlesspaper_push`.
+
+Existing installations may continue to work for the time being, but compatibility with future Home Assistant releases or paperlesspaper API changes is no longer guaranteed.
+
+Users are encouraged to migrate to `paperlesspaper-ha`.
+
+A detailed migration guide is available in [`MIGRATION.md`](https://github.com/fwmone/paperlesspaper_push/blob/main/MIGRATION.md).
+
 ## [0.1.8] - 2026-05-08
 
 ### Changed

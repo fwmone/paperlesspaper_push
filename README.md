@@ -1,6 +1,7 @@
 # 📖 Table of content
 
 - [📖 Table of content](#-table-of-content)
+- [⚠️ Deprecated - Migration Guide](#️-deprecated---migration-guide)
 - [Features](#features)
 - [🧩 Requirements](#-requirements)
 - [📦 Installation](#-installation)
@@ -26,6 +27,7 @@
   - [Manual refresh (optional)](#manual-refresh-optional)
   - [Battery percentage calculation](#battery-percentage-calculation)
   - [Example for a Home Assistant dashboard integration](#example-for-a-home-assistant-dashboard-integration)
+- [API / Upload Method](#api--upload-method)
 - [Troubleshooting](#troubleshooting)
   - [Upload succeeds but frame shows old image](#upload-succeeds-but-frame-shows-old-image)
   - [Blocking calls in logs](#blocking-calls-in-logs)
@@ -33,6 +35,10 @@
 - [Support / Issues](#support--issues)
 - [License](#license)
 - [🙏 Note](#-note)
+
+# ⚠️ Deprecated - Migration Guide
+
+This integration is no longer actively developed. Please find the migration guide to paperlesspaper-ha [here](MIGRATION.md).
 
 # Features
 
@@ -374,6 +380,7 @@ cards:
         tap_action:
           action: more-info
 column_span: 2
+```
 
 # API / Upload Method
 
